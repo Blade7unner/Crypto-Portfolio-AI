@@ -1,0 +1,15 @@
+{
+  "name": "crypto-tracker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start": "concurrently --kill-others \"npm run dev --prefix client\" \"node server/index.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
