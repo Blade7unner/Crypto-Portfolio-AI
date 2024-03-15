@@ -7,6 +7,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
+import AI from './pages/AI';
 import apolloClient from './apolloClient';
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/AI" element={<AI />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/signup" element={<SignupForm />} />
               </Routes>
