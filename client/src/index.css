@@ -1,0 +1,31 @@
+/* body {
+    padding: 80px 40px;
+    font-family: Helvetica;
+    background: darkslategray;
+  }
+  
+  .wrapper {
+    font-size: 16px;
+    color: #666;
+    padding: 25px;
+  }
+  
+  svg {
+    overflow: visible;
+  }
+  
+  text {
+    fill: gainsboro;
+    color: gainsboro;
+    font-size: 16px;
+  }
+  
+  .subtitle text {
+    text-decoration: underline;
+    font-size: 12px;
+  }
+  
+  .axis .domain,
+  .axis.xAxis line {
+    display: none;
+  } */
