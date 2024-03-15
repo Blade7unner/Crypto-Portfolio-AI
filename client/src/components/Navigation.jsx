@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
+import CryptoData from './CryptoData'; // CryptoData component
 
 function Navigation() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function Navigation() {
         <li><Link to="/AI">AI</Link></li>
         <li><Link to="/login">Login</Link></li>
         <li><Link to="/signup">Sign Up</Link></li>
+        <li><CryptoData /></li> {/* CryptoData component  */}
       </ul>
     </nav>
   );
