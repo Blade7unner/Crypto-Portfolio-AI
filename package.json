@@ -6,10 +6,14 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"npm run dev --prefix client\" \"node server/index.js\""
+    "start": "concurrently --kill-others \"npm run dev --prefix client\" \"node server/index.js\"",
+    "install": "cd server && npm i && cd ../client && npm i"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
 }
