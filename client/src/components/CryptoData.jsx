@@ -18,6 +18,7 @@ const CryptoData = () => {
             sparkline: false,
           },
         });
+        console.log(response.data)
         setCryptoData(response.data);
       } catch (error) {
         console.error('Error fetching cryptocurrency data:', error);

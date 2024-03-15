@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import * as d3 from "d3";
 //import index.css file
-import "/src/index.css";
+//import "/src/index.css";
 
 const margin = { top: 40, right: 80, bottom: 60, left: 50 };
-const width = 960 - margin.left - margin.right;
-const height = 280 - margin.top - margin.bottom;
+const width = 300 - margin.left - margin.right;
+const height = 150 - margin.top - margin.bottom;
 const color = "OrangeRed";
 
 const Chart = () => {
@@ -73,20 +73,37 @@ const Chart = () => {
     setActiveIndex(null);
   };
 
+  const xAxisStyle = {
+    fontSize: "5px", // Adjust the font size as needed
+  };
+
+  const yAxisStyle = {
+    fontSize: "5px", // Adjust the font size as needed
+  };
+  
+  const tooltipStyle = {
+    fontSize: "5px", // Adjust the font size as needed
+  };
+
   return (
     <div className="wrapper">
       <svg
-        viewBox={`0 0 ${width + margin.left + margin.right} ${
+        viewBox={`-50 -50 ${width + margin.left + margin.right} ${
           height + margin.top + margin.bottom
         }`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        //style={{ marginLeft: "100px" }} // Adjust the margin-left as needed
+
       >
-        <g className="axis" ref={getYAxis} />
+        <g className="axis" ref={getYAxis}
+            style={yAxisStyle}
+         />
         <g
           className="axis xAxis"
           ref={getXAxis}
           transform={`translate(0,${height})`}
+          style={xAxisStyle}
         />
         <path fill={color} d={areaPath} opacity={0.3} />
         <path strokeWidth={3} fill="none" stroke={color} d={linePath} />
@@ -98,26 +115,19 @@ const Chart = () => {
         >
           {"USD"}
         </text>
-        <text x={width / 2} y={0 - margin.top / 2} textAnchor="middle">
-          {"USD to RUB Exchange Rates, 2020"}
+        <text style={{fontSize:"10px"}} x={width / 2} y={0 - margin.top / 2} textAnchor="middle">
+          {"NAME OF STOCK"}
         </text>
-        <a
-          className="subtitle"
-          href="https://www.moex.com/ru/index/rtsusdcur.aspx?tid=2552"
-          target="_blank"
-        >
-          <text x="0" y={height + 50}>
-            {"Source: Moscow Exchange"}
-          </text>
-        </a>
         {data.map((item, index) => {
           return (
             <g key={index}>
               <text
                 fill="#666"
                 x={getX(item.date)}
-                y={getY(item.price) - 20}
+                y={getY(item.price) - 10}
                 textAnchor="middle"
+                style={tooltipStyle} // Apply tooltipStyle here
+
               >
                 {index === activeIndex ? item.price : ""}
               </text>
