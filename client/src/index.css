@@ -29,3 +29,16 @@
   .axis.xAxis line {
     display: none;
   } */
+
+  .chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Adjust the width of charts for mobile screens */
+  @media (max-width: 768px) {
+    .chart-container {
+      width: 100%;
+    }
+  }
