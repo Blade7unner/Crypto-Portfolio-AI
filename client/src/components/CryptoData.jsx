@@ -42,7 +42,7 @@ const CryptoData = () => {
       const response = await axios.get('https://pro-api.coingecko.com/api/v3/coins/markets', {
         params: {
           vs_currency: 'usd',
-          ids: 'bitcoin,ethereum',
+          ids: 'bitcoin,ethereum,solana,dogecoin,binancecoin',
           x_cg_pro_api_key: 'CG-nnCctk4hw5dDsH5iHEpiXfUu', // Your CoinGecko Pro API key
         },
       });
