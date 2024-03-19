@@ -1,5 +1,5 @@
 const { OpenAI } = require('openai');
-console.log(process.env);
+//console.log(process.env);
 // Load your OpenAI API key from environment variables
 const openai = new OpenAI({ apiKey: process.env.OPENAI_SECRET_KEY });
 
