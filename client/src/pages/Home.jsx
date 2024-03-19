@@ -7,6 +7,9 @@ function Home() {
     <div className="page">
       <h2>Home</h2>
       <p>Welcome to the Home page!</p>
+      <LineChart />
+      <LineChart />
+
       <div style={{ width: '100%' }} className="chart-container">
         <LineGraphApexCharts stockName="Bitcoin" rawData={rawDataBitcoin} />
         <LineGraphApexCharts stockName="Etherium" rawData={rawDataEtherium} />
@@ -14,6 +17,9 @@ function Home() {
 
       </div>
     </div>
+
+
+
   );
 }
 export default Home;
