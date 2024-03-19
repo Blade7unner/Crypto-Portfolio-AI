@@ -1,4 +1,3 @@
-// server/routes/api/coingeckoService.js
 
 const axios = require('axios');
 

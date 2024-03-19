@@ -1,11 +1,10 @@
-// server/routes/api/index.js
 
 const router = require('express').Router();
 const openaiRoutes = require('./openai-routes.js');
 const topGainersLosersService = require('./topGainersLosersService');
 const simplePriceService = require('./simplePriceService'); // Import the simple price service
 
-// Define route for fetching top gainers and losers data
+// Route for fetching top gainers and losers data
 router.get('/top-gainers-losers', async (req, res) => {
   try {
     const topGainersLosers = await topGainersLosersService.getTopGainersLosers();
@@ -16,7 +15,7 @@ router.get('/top-gainers-losers', async (req, res) => {
   }
 });
 
-// Define route for fetching simple price data
+// Route for fetching simple price data
 router.get('/simple-price', async (req, res) => {
   const { ids, vsCurrency } = req.query;
   try {
