@@ -6,7 +6,7 @@ const SIGNUP_MUTATION = gql`
     signup(email: $email, password: $password) {
       token
       user {
-        id
+        _id
         email
       }
     }
@@ -32,6 +32,10 @@ function SignupForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      // Handle input validation error
+      return;
+    }
     signup({ variables: { email, password } });
   };
 
