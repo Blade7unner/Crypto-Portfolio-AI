@@ -1,19 +1,16 @@
+// server/routes/api/coingeckoService.js
 
 const axios = require('axios');
 
-const BASE_URL = 'https://api.coingecko.com/api/v3';
-const API_KEY = 'CG-ktjJjHNMEBGdNELv2xpJXjH3'; // CoinGecko API Key
+const BASE_URL = 'https://pro-api.coingecko.com/api/v3';
 
 async function getCryptoData() {
   try {
     const response = await axios.get(`${BASE_URL}/coins/markets`, {
       params: {
         vs_currency: 'usd',
-        ids: 'bitcoin,ethereum',
-      },
-      headers: {
-        // Include API key in request headers
-        'x-access-token': API_KEY,
+        ids: 'bitcoin,ethereum,litecoin,ripple,cardano,solana,dogecoin,binancecoin', // Add more coins here
+        // No need for API key in the headers for CoinGecko Pro API
       },
     });
 
