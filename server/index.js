@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
@@ -5,6 +6,8 @@ const path = require('path');
 
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
+
+const routes = require('./routes');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -28,6 +31,8 @@ const startApolloServer = async () => {
     });
   }
   
+  app.use(routes);
+
   app.use('/graphql', expressMiddleware(server));
 
   db.once('open', () => {
@@ -37,6 +42,8 @@ const startApolloServer = async () => {
     });
   });
 };
+
+
 
 // Call the async function to start the server
 startApolloServer();
