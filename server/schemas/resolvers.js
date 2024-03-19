@@ -12,7 +12,7 @@ const resolvers = {
   },
 
   Mutation: {
-    register: async (_, { email, password }) => {
+    signup: async (_, { email, password }) => {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         throw new Error('User already exists with that email');
