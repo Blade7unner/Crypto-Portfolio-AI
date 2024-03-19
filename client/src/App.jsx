@@ -8,7 +8,7 @@ import Contact from './pages/Contact';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AI from './pages/AI';
-import apolloClient from './apolloClient';
+import apolloClient from './apolloClient.js';
 import './App.css';
 
 function App() {
