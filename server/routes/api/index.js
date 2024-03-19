@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const matchupRoutes = require('./openai-routes.js');
+const openaiRoutes = require('./openai-routes.js');
 
 router.use('/openai', openaiRoutes);
 

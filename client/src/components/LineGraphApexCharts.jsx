@@ -36,7 +36,7 @@ else {
     const renderChart = (seriesData) => {
       const options = {
         series: [{
-          name: "Price",
+          name: `${stockName} Price`,
           data: seriesData
         }],
         chart: {

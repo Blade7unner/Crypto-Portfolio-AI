@@ -16,7 +16,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    register(email: String!, password: String!): AuthPayload
+    signup(email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
   }
 `;
