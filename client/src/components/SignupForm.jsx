@@ -21,8 +21,11 @@ function SignupForm() {
 
   const [signup, { loading }] = useMutation(SIGNUP_MUTATION, {
     onCompleted: (data) => {
-      setSuccessMessage('Signup successful! Welcome to our application.');
+      setSuccessMessage('Signup successful! Welcome to our application. Directing you to the Crypto!');
       setErrorMessage('');
+      setTimeout(() => {
+        window.location.assign('/');
+      }, 2000);
     },
     onError: (error) => {
       setErrorMessage(error.message);
