@@ -1,33 +1,20 @@
+const express = require('express');
+const path = require('path');
 
-const router = require('express').Router();
-const openaiRoutes = require('./openai-routes.js');
-const topGainersLosersService = require('./topGainersLosersService');
-const simplePriceService = require('./simplePriceService'); // Import the simple price service
+const app = express();
 
-// Route for fetching top gainers and losers data
-router.get('/top-gainers-losers', async (req, res) => {
-  try {
-    const topGainersLosers = await topGainersLosersService.getTopGainersLosers();
-    res.setHeader('Content-Type', 'application/json');
-    res.json(topGainersLosers);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Route for fetching simple price data
-router.get('/simple-price', async (req, res) => {
-  const { ids, vsCurrency } = req.query;
-  try {
-    const simplePrice = await simplePriceService.getSimplePrice(ids.split(','), vsCurrency);
-    res.setHeader('Content-Type', 'application/json');
-    res.json(simplePrice);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Include existing OpenAI routes
-router.use('/openai', openaiRoutes);
+app.use('/openai', require('./openai-routes.js'));
 
-module.exports = router;
+// Catchall handler for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

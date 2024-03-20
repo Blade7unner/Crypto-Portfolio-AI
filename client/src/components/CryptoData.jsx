@@ -1,76 +1,30 @@
+// src/components/CryptoData.jsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-// Separate component for displaying cryptocurrency data
-const CryptoList = ({ cryptoData }) => (
-  <div>
-    <h2>Cryptocurrency Data</h2>
-    <ul>
-      {cryptoData.map((crypto) => (
-        <li key={crypto.id}>
-          {crypto.name} ({crypto.symbol}): ${crypto.current_price}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-// Separate component for displaying simple price data
-const SimplePriceList = ({ simplePrice }) => (
-  <div>
-    <h2>Simple Price Data</h2>
-    <ul>
-      {Object.entries(simplePrice).map(([id, price]) => (
-        <li key={id}>
-          {id}: ${price.usd}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+import Coins from './Coins';
 
 const CryptoData = () => {
-  const [cryptoData, setCryptoData] = useState([]);
-  const [simplePrice, setSimplePrice] = useState(null); // State to store simple price data
+  const [coins, setCoins] = useState([]);
 
   useEffect(() => {
-    fetchCryptoData();
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en'
+        );
+        const data = await response.json();
+        setCoins(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
-
-  const fetchCryptoData = async () => {
-    try {
-      const response = await axios.get('https://pro-api.coingecko.com/api/v3/coins/markets', {
-        params: {
-          vs_currency: 'usd',
-          ids: 'bitcoin,ethereum,solana,dogecoin,binancecoin',
-          x_cg_pro_api_key: 'CG-nnCctk4hw5dDsH5iHEpiXfUu', // Your CoinGecko Pro API key
-        },
-      });
-      setCryptoData(response.data);
-    } catch (error) {
-      console.error('Error fetching cryptocurrency data:', error);
-    }
-  };
-
-  const fetchSimplePrice = async () => {
-    try {
-      const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
-        params: {
-          ids: 'bitcoin,ethereum,solana,dogecoin,binancecoin', // Add new coins here
-          vs_currencies: 'usd',
-        },
-      });
-      setSimplePrice(response.data);
-    } catch (error) {
-      console.error('Error fetching simple price data:', error);
-    }
-  };
 
   return (
     <div>
-      <CryptoList cryptoData={cryptoData} />
-      <button onClick={fetchSimplePrice}>Fetch Simple Price</button>
-      {simplePrice && <SimplePriceList simplePrice={simplePrice} />}
+      <h1>Top 10 Cryptocurrencies by Market Cap</h1>
+      <Coins coins={coins} />
     </div>
   );
 };
