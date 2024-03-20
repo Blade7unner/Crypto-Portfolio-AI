@@ -18,7 +18,10 @@ function LoginForm() {
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       setErrorMessage('');
-      setSuccessMessage('Login successful! Welcome back.');
+      setSuccessMessage('Login successful! Welcome back. Directing you to the Crypto!');
+      setTimeout(() => {
+        window.location.assign('/');
+      }, 2000);
     },
     onError: (error) => {
       setErrorMessage(error.message);
