@@ -6,7 +6,7 @@ const fetchCryptoData = async (symbol) => {
         params: {
           fsym: symbol, // Symbol for the cryptocurrency (BTC or ETH)
           tsym: 'USD',  // Convert to USD
-          limit: 1,    // Fetching data for the last 10 days
+          limit: 10,    // Fetching data for the last 10 days
         },
       });
       return response.data.Data.Data; 

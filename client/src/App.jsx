@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
@@ -11,6 +11,7 @@ import AI from './pages/AI';
 import FavoritesPage from './components/FavoritesPage';
 import apolloClient from './apolloClient.js';
 import { AuthProvider } from './contexts/AuthContext';
+import CryptoPrices from './components/CryptoPrices'; // Import CryptoPrices component
 import './App.css';
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
           <div>
             <Navigation />
             <div className="page-container">
+              {/* Insert CryptoPrices component here */}
+              <CryptoPrices />
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />

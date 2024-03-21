@@ -1,37 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import fetchCryptoData from './cryptoApi'; // Import the fetchCryptoData function
+import React, { useEffect } from 'react';
+import fetchCryptoData from './cryptoApi'; 
 
 const CryptoData = () => {
-  const [btcData, setBtcData] = useState([]);
-  const [ethData, setEthData] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
-      const btcData = await fetchCryptoData('BTC'); // Fetch Bitcoin data
-      const ethData = await fetchCryptoData('ETH'); // Fetch Ethereum data
-
-      if (btcData) {
-        setBtcData(btcData); // Set Bitcoin data to state if fetched successfully
-      }
-      if (ethData) {
-        setEthData(ethData); // Set Ethereum data to state if fetched successfully
+      try {
+        // Fetch Bitcoin data
+        const btcData = await fetchCryptoData('BTC');
+        console.log('Bitcoin Data:', btcData);
+        
+        // Fetch Ethereum data
+        const ethData = await fetchCryptoData('ETH');
+        console.log('Ethereum Data:', ethData);
+      } catch (error) {
+        console.error('Error fetching cryptocurrency data:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  return (
-    <div>
-      {/* Render Bitcoin data */}
-      <h2>Bitcoin Data</h2>
-      <pre>{JSON.stringify(btcData, null, 2)}</pre>
-
-      {/* Render Ethereum data */}
-      <h2>Ethereum Data</h2>
-      <pre>{JSON.stringify(ethData, null, 2)}</pre>
-    </div>
-  );
+  return null; // Render nothing
 };
 
 export default CryptoData;
