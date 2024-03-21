@@ -3,30 +3,27 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.layers import Dense, Dropout, LSTM
-from tensorflow.keras.models import Sequential
-import os
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, TensorDataset
 from pymongo import MongoClient
+import os
 from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__), "..", ".env")
-load_dotenv(dotenv_path)
+# Check GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Device:", device)
+
+# Load environment variables for MongoDB
+dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
+load_dotenv(dotenv_path=dotenv_path)
 MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client["cryptoDB"]
-collection = db["neuralNetwork"]
+collection = db["neuralNetworkPredictions"]
 
 
-def insert_prediction_to_database(prediction, crypto_currency, against_currency):
-    prediction_document = {
-        "crypto_currency": crypto_currency,
-        "against_currency": against_currency,
-        "prediction": prediction.tolist(),
-        "prediction_date": dt.datetime.now(),
-    }
-    collection.insert_one(prediction_document)
-
-
+# Function to fetch cryptocurrency data
 def fetch_data(crypto_currency, against_currency, time_to):
     url = "https://min-api.cryptocompare.com/data/v2/histoday"
     params = {"fsym": crypto_currency, "tsym": against_currency,
@@ -39,70 +36,106 @@ def fetch_data(crypto_currency, against_currency, time_to):
     return df
 
 
-crypto_currency = "BTC"
+# Function to insert prediction results into MongoDB
+def insert_prediction_to_database(predictions, crypto_currency, against_currency):
+    predictions_list = predictions.flatten().tolist()  # Convert tensor to list
+    prediction_document = {
+        "crypto_currency": crypto_currency,
+        "against_currency": against_currency,
+        "predictions": predictions_list,  # List of predicted prices for the next 10 days
+        "prediction_date": dt.datetime.now(),
+    }
+    collection.insert_one(prediction_document)
+
+
+# LSTM Model
+class CryptoPredictor(nn.Module):
+    def __init__(self, input_size=1, hidden_layer_size=50, output_size=10):
+        super().__init__()
+        self.hidden_layer_size = hidden_layer_size
+        self.lstm = nn.LSTM(input_size, hidden_layer_size,
+                            batch_first=True, num_layers=3, dropout=0.2)
+        self.linear = nn.Linear(hidden_layer_size, output_size)
+        self.dropout = nn.Dropout(0.2)
+
+    def forward(self, input_seq):
+        lstm_out, _ = self.lstm(input_seq)
+        predictions = self.linear(self.dropout(lstm_out[:, -1]))
+        return predictions
+
+
+# clear out database
+collection.delete_many({})
+
+cryptocurrencies = ["BTC", "ETH", "BNB", "ADA",
+                    "SOL", "XRP", "DOT", "LTC", "LINK", "BCH"]
 against_currency = "USD"
-
-start = dt.datetime(2016, 1, 1)
-end = dt.datetime.now()
-
-data = fetch_data(crypto_currency, against_currency, end)
-
-# Preparing data
-scaler = MinMaxScaler(feature_range=(0, 1))
-scaled_data = scaler.fit_transform(data["close"].values.reshape(-1, 1))
-
 prediction_days = 60
-future_day = 180
+future_days = 10
 
-x_train, y_train = [], []
+for crypto_currency in cryptocurrencies:
+    print(f"Processing {crypto_currency} predictions...")
+    end = dt.datetime.now()
+    data = fetch_data(crypto_currency, against_currency, end)
 
-for x in range(prediction_days, len(scaled_data) - future_day):
-    x_train.append(scaled_data[x - prediction_days: x, 0])
-    y_train.append(scaled_data[x + future_day, 0])
+    # Data preprocessing
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaled_data = scaler.fit_transform(data["close"].values.reshape(-1, 1))
 
-x_train, y_train = np.array(x_train), np.array(y_train)
-x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+    x_train, y_train = [], []
+    for x in range(prediction_days, len(scaled_data) - future_days + 1):
+        x_train.append(scaled_data[x - prediction_days: x, 0])
+        y_train.append(scaled_data[x: x + future_days, 0])
 
-model = Sequential()
+    x_train, y_train = np.array(x_train), np.array(y_train)
+    x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
 
-model.add(LSTM(units=50, return_sequences=True,
-          input_shape=(x_train.shape[1], 1)))
-model.add(Dropout(0.2))
-model.add(LSTM(units=50, return_sequences=True))
-model.add(Dropout(0.2))
-model.add(LSTM(units=50))
-model.add(Dropout(0.2))
-model.add(Dense(units=1))
-model.compile(optimizer="adam", loss="mean_squared_error")
-model.fit(x_train, y_train, epochs=25, batch_size=32)
+    # Converting data to PyTorch tensors
+    train_data = TensorDataset(torch.Tensor(x_train), torch.Tensor(y_train))
+    train_loader = DataLoader(train_data, shuffle=False, batch_size=32)
 
-test_data = fetch_data(crypto_currency, against_currency, end)
-actual_prices = test_data["close"].values
+    # Model setup
+    model = CryptoPredictor().to(device)
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
-total_dataset = pd.concat((data["close"], test_data["close"]), axis=0)
-model_inputs = total_dataset[len(
-    total_dataset) - len(test_data) - prediction_days:].values
-model_inputs = model_inputs.reshape(-1, 1)
-model_inputs = scaler.fit_transform(model_inputs)
+    # Training the model
+    model.train()
+    for epoch in range(25):
+        for seq, labels in train_loader:
+            optimizer.zero_grad()
+            seq, labels = seq.to(device), labels.to(device)
+            y_pred = model(seq)
+            single_loss = criterion(y_pred, labels)
+            single_loss.backward()
+            optimizer.step()
+        print(f"epoch: {epoch:3} loss: {single_loss.item():10.8f}")
 
-x_test = []
+    # Predicting the next 10 days
+    model.eval()
+    real_data = [
+        scaled_data[len(scaled_data) - prediction_days: len(scaled_data), 0]]
+    real_data = np.array(real_data)
+    real_data = np.reshape(
+        real_data, (real_data.shape[0], real_data.shape[1], 1))
+    real_data = torch.Tensor(real_data).to(device)
 
-for x in range(prediction_days, len(model_inputs)):
-    x_test.append(model_inputs[x - prediction_days: x, 0])
+    with torch.no_grad():
+        future_predictions = model(real_data)
 
-x_test = np.array(x_test)
-x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
+    # Scaling back the predictions to original scale
+    future_predictions = scaler.inverse_transform(
+        future_predictions.cpu().numpy())
 
-prediction_prices = model.predict(x_test)
-prediction_prices = scaler.inverse_transform(prediction_prices)
+    # Print each day's prediction
+    for i, price in enumerate(future_predictions[0], start=1):
+        print(f"Price of {crypto_currency} {
+              i} day(s) from now is ${price:.2f}")
 
-real_data = [model_inputs[len(model_inputs) + 1 -
-                          prediction_days: len(model_inputs) + 1, 0]]
+    # Insert predictions to MongoDB
+    insert_prediction_to_database(
+        future_predictions, crypto_currency, against_currency)
 
-real_data = np.array(real_data)
-real_data = np.reshape(real_data, (real_data.shape[0], real_data.shape[1], 1))
+    print(f"Completed {crypto_currency} predictions.")
 
-prediction = model.predict(real_data)
-prediction = scaler.inverse_transform(prediction)
-insert_prediction_to_database(prediction, crypto_currency, against_currency)
-# print(prediction)
+print("All predictions completed and saved to the database.")
