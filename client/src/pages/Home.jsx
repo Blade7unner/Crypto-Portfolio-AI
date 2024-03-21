@@ -5,18 +5,23 @@ import axios from 'axios';
 import fetchCryptoData from '../components/fetchCryptoData';
 
 function Home() {
-  const coins = ['BTC', 'ETH']; // Array of cryptocurrencies
+  const coins = ['BTC', 'ETH', 'MV']; // Array of cryptocurrencies
   const [cryptoData, setCryptoData] = useState({}); // State to store crypto data
+  const [move, setMove] = useState({}); // State to store crypto data
+  const [filter, setFilter] = useState('all'); // State to track the filter option
 
   useEffect(() => {
     // Fetch crypto data for each coin when the component mounts
     const fetchDataForCoins = async () => {
       const data = {};
+      const moveData = {};
       for (const coin of coins) {
-        const coinData = await fetchCryptoData(coin);
-        data[coin] = coinData;
+        const { restructuredData, move } = await fetchCryptoData(coin);
+        data[coin] = restructuredData;
+        moveData[coin] = { move };
       }
       setCryptoData(data);
+      setMove(moveData);
     };
     fetchDataForCoins();
   }, []);
@@ -26,16 +31,36 @@ function Home() {
     console.log(cryptoData);
   }, [cryptoData]);
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
   return (
     <div className="page">
       <h2>Home</h2>
       <p>Welcome to the Home page!</p>
+      <div>
+        <label>
+          Filter By:
+          <select value={filter} onChange={handleFilterChange}>
+            <option value="all">All</option>
+            <option value="buy">Buy</option>
+            <option value="sell">Sell</option>
+          </select>
+        </label>
+      </div>
       {coins.map((coin) => (
-        cryptoData[coin] && <LineGraphApexCharts key={coin} stockName={coin} rawData={cryptoData[coin]} />
+        (filter === 'all' || (filter === 'buy' && move[coin]?.move === 'Buy') || (filter === 'sell' && move[coin]?.move === 'Sell')) && cryptoData[coin] && (
+          <LineGraphApexCharts
+            key={coin}
+            stockName={coin}
+            rawData={cryptoData[coin]}
+            move={move[coin]?.move}
+          />
+        )
       ))}
     </div>
   );
 }
 
 export default Home;
-

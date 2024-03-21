@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import ApexCharts from 'apexcharts';
 
-const ChartComponent = ({ rawData, stockName }) => {
+const ChartComponent = ({ rawData, stockName,move }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -14,21 +14,21 @@ const ChartComponent = ({ rawData, stockName }) => {
       }));
     };
 
-const highestPrice = Math.max(...rawData.map(data => data.open));
-console.log(highestPrice)
-const latestPrice = rawData[rawData.length - 1].open;
-const thresholdBuy = 0.5 * highestPrice;
-const thresholdHold = 0.25 * highestPrice;
-let move = ""
-if (latestPrice < thresholdBuy) {
-    move = "Buy"
-} 
-else if (latestPrice < thresholdHold && latestPrice > thresholdBuy) {
-    move = "Hold"
-}
-else {
-    move = "Sell"
-}
+// const highestPrice = Math.max(...rawData.map(data => data.open));
+// console.log(highestPrice)
+// const latestPrice = rawData[rawData.length - 1].open;
+// const thresholdBuy = 0.5 * highestPrice;
+// const thresholdHold = 0.25 * highestPrice;
+// let move = ""
+// if (latestPrice < thresholdBuy) {
+//     move = "Buy"
+// } 
+// else if (latestPrice < thresholdHold && latestPrice > thresholdBuy) {
+//     move = "Hold"
+// }
+// else {
+//     move = "Sell"
+// }
 
     // Function to render the chart with parsed data
     const renderChart = (seriesData) => {
