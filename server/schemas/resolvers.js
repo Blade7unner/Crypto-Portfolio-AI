@@ -49,6 +49,34 @@ const resolvers = {
         user,
       };
     },
+    addFavorite: async (_, { userId, favorite }) => {
+      if (!userId) {
+        throw new Error('User ID is required to add a favorite');
+      }
+
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      user.favorites.push(favorite);
+      await user.save();
+      return user;
+    },
+    removeFavorite: async (_, { userId, favorite }) => {
+      if (!userId) {
+        throw new Error('User ID is required to remove a favorite');
+      }
+
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      user.favorites = user.favorites.filter(fav => fav !== favorite);
+      await user.save();
+      return user;
+    }
   },
 };
 
