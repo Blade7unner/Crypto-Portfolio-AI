@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import { useAuth } from '../contexts/AuthContext'; // Adjust the path as necessary
+import { useNavigate } from 'react-router-dom';
 
 const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
@@ -12,47 +14,44 @@ const LOGIN_MUTATION = gql`
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+  const { login } = useAuth(); // Using AuthContext to manage login state
+  const navigate = useNavigate(); // Using useNavigate for redirection
+  const [loginMutation, { error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      setErrorMessage('');
-      setSuccessMessage('Login successful! Welcome back. Directing you to the Crypto!');
-      setTimeout(() => {
-        window.location.assign('/');
-      }, 2000);
+      login(data.login.token); // Update login state with the token
+      navigate('/'); // Redirect to the home page after successful login
     },
-    onError: (error) => {
-      setErrorMessage(error.message);
-      setSuccessMessage('');
+    onError: (err) => {
+      console.error(err.message); // It's a good practice to handle errors
     },
   });
 
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    login({ variables: { email, password } });
+    loginMutation({ variables: { email, password } });
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
+        <h2>Log In</h2>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
+          required
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          required
         />
-        <button type="submit" disabled={loading}>Login</button>
+        <button type="submit">Log In</button>
+        {error && <p style={{ color: 'red' }}>{error.message}</p>}
       </form>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
     </div>
   );
 }

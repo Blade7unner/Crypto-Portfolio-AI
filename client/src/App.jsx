@@ -9,12 +9,13 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AI from './pages/AI';
 import apolloClient from './apolloClient.js';
+import { AuthProvider } from './contexts/AuthContext';
 import './App.css';
 
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
-      <>
+      <AuthProvider>
         <a href="/">
           <div className="logo"><img src="/logo.svg" alt="Logo" /></div>
         </a>
@@ -33,7 +34,7 @@ function App() {
             </div>
           </div>
         </Router>
-      </>
+      </AuthProvider>
     </ApolloProvider>
   );
 }
