@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { useAuth } from '../contexts/AuthContext'; // Adjust the path as necessary
+import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const LOGIN_MUTATION = gql`
@@ -14,15 +14,15 @@ const LOGIN_MUTATION = gql`
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth(); // Using AuthContext to manage login state
-  const navigate = useNavigate(); // Using useNavigate for redirection
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [loginMutation, { error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      login(data.login.token); // Update login state with the token
-      navigate('/'); // Redirect to the home page after successful login
+      login(data.login.token);
+      navigate('/');
     },
     onError: (err) => {
-      console.error(err.message); // It's a good practice to handle errors
+      console.error(err.message);
     },
   });
 
