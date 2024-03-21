@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ApexCharts from 'apexcharts';
 
 const ChartComponent = ({ rawData, stockName, move }) => {
   const chartRef = useRef(null);
   const buttonRef = useRef(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     const parseData = (rawData) => {
@@ -57,7 +58,6 @@ const ChartComponent = ({ rawData, stockName, move }) => {
     };
 
     const seriesData = parseData(rawData);
-
     renderChart(seriesData);
 
     const button = buttonRef.current;
@@ -72,10 +72,28 @@ const ChartComponent = ({ rawData, stockName, move }) => {
     };
   }, []);
 
+  const handleSaveStock = () => {
+    setIsSaved(true);
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       <div id="chart" ref={chartRef}></div>
-      <button ref={buttonRef} style={{ backgroundColor: 'blue', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>Save stock to favorites</button>
+      <button 
+        ref={buttonRef} 
+        style={{ 
+          backgroundColor: isSaved ? 'green' : 'blue', 
+          color: '#fff', 
+          border: 'none', 
+          padding: '5px 10px', 
+          borderRadius: '5px', 
+          cursor: 'pointer' 
+        }} 
+        onClick={handleSaveStock} 
+        disabled={isSaved}
+      >
+        {isSaved ? "Stock saved!" : "Save stock to favorites"}
+      </button>
     </div>
   );
 };
