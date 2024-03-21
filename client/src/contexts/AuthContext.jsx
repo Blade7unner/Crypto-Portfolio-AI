@@ -7,24 +7,22 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userFavorites, setUserFavorites] = useState([]);
-
-  // Attempt to read the user's auth status from local storage on app load
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      // Optionally, you could also load the user's favorites here if stored or make an API call to fetch them
     }
   }, []);
 
   const login = (token) => {
-    localStorage.setItem('token', token); // Store token for session persistence
+    localStorage.setItem('token', token);
     setIsLoggedIn(true);
   };
 
   const logout = () => {
-    localStorage.removeItem('token'); // Clear token
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
+    window.location.assign('/');
   };
 
   const value = { isLoggedIn, login, logout, userFavorites, setUserFavorites };

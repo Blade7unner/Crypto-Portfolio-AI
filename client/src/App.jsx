@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AI from './pages/AI';
+import FavoritesPage from './components/FavoritesPage';
 import apolloClient from './apolloClient.js';
 import { AuthProvider } from './contexts/AuthContext';
 import './App.css';
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/AI" element={<AI />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/signup" element={<SignupForm />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
               </Routes>
             </div>
           </div>
