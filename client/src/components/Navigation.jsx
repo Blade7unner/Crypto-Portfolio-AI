@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import CryptoData from './CryptoData'; 
-import './CryptoData.css'; 
-import CoinItem from './CoinItem';
-import Coins from './Coins';
 
 function Navigation() {
   const location = useLocation();
@@ -34,9 +31,7 @@ function Navigation() {
         <li><Link to="/login">Login</Link></li>
         <li><Link to="/signup">Sign Up</Link></li>
         <li><CryptoData /></li> 
-        <li>
-          <Coins coins={[]} /> 
-        </li>
+        {/* If you want to add additional navigation items, do it here */}
       </ul>
     </nav>
   );
