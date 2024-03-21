@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import { useAuth } from '../contexts/AuthContext'; // Adjust the path as necessary
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SIGNUP_MUTATION = gql`
   mutation Signup($email: String!, $password: String!) {
@@ -18,14 +20,14 @@ function SignupForm() {
   const [password, setPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const { login } = useAuth(); // Use the login function from AuthContext
+  const navigate = useNavigate(); // Initialize useNavigate for redirection
 
   const [signup, { loading }] = useMutation(SIGNUP_MUTATION, {
     onCompleted: (data) => {
-      setSuccessMessage('Signup successful! Welcome to our application. Directing you to the Crypto!');
-      setErrorMessage('');
-      setTimeout(() => {
-        window.location.assign('/');
-      }, 2000);
+      login(data.signup.token); // Use the token to set the login state
+      // Directly navigate instead of using window.location.assign to avoid reloading the page
+      navigate('/'); // Redirect to the home page or dashboard
     },
     onError: (error) => {
       setErrorMessage(error.message);
@@ -33,29 +35,28 @@ function SignupForm() {
     },
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      // Handle input validation error
-      return;
-    }
     signup({ variables: { email, password } });
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
+      <h2>Sign Up</h2>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
+          required
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          required
         />
         <button type="submit" disabled={loading}>Sign Up</button>
       </form>
