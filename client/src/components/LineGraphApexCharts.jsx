@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import ApexCharts from 'apexcharts';
 
-const ChartComponent = ({ rawData, stockName,move }) => {
+const ChartComponent = ({ rawData, stockName, move }) => {
   const chartRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
-
-    // Function to parse raw data into series data for the chart
     const parseData = (rawData) => {
       return rawData.map(dataPoint => ({
         x: dataPoint.date,
@@ -14,23 +13,6 @@ const ChartComponent = ({ rawData, stockName,move }) => {
       }));
     };
 
-// const highestPrice = Math.max(...rawData.map(data => data.open));
-// console.log(highestPrice)
-// const latestPrice = rawData[rawData.length - 1].open;
-// const thresholdBuy = 0.5 * highestPrice;
-// const thresholdHold = 0.25 * highestPrice;
-// let move = ""
-// if (latestPrice < thresholdBuy) {
-//     move = "Buy"
-// } 
-// else if (latestPrice < thresholdHold && latestPrice > thresholdBuy) {
-//     move = "Hold"
-// }
-// else {
-//     move = "Sell"
-// }
-
-    // Function to render the chart with parsed data
     const renderChart = (seriesData) => {
       const options = {
         series: [{
@@ -74,13 +56,15 @@ const ChartComponent = ({ rawData, stockName,move }) => {
       chart.render();
     };
 
-    // Parse the raw data
     const seriesData = parseData(rawData);
 
-    // Render the chart with parsed data
     renderChart(seriesData);
 
-    // Cleanup function to destroy chart instance
+    const button = buttonRef.current;
+    button.style.position = 'absolute';
+    button.style.top = '0px'; // Adjust the top position as needed
+    button.style.left = '210px'; // Adjust the left position as needed
+
     return () => {
       if (chartRef.current) {
         chartRef.current.innerHTML = '';
@@ -88,7 +72,12 @@ const ChartComponent = ({ rawData, stockName,move }) => {
     };
   }, []);
 
-  return <div id="chart" ref={chartRef}></div>;
+  return (
+    <div style={{ position: 'relative' }}>
+      <div id="chart" ref={chartRef}></div>
+      <button ref={buttonRef} style={{ backgroundColor: 'blue', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>Save stock to favorites</button>
+    </div>
+  );
 };
 
 export default ChartComponent;
