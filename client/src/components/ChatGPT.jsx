@@ -19,7 +19,7 @@ function ChatGPT() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            setGptResponse(data.aiResponse);
+            setGptResponse(data.oneDay);
         })
         .catch(error => {
             console.error('AI Error:', error);
@@ -27,7 +27,7 @@ function ChatGPT() {
     }
 
     const handleGetPredictionsClick = async () => {
-        sendMessageToServer('What is the future of Bitcoin?');
+        sendMessageToServer("If I provide you with market data can you estimate what etherium price is trending towards based on past market activity. What will be price in 1 day, 5 days, 10 days, 30 days, 6 months, and 1 year? Each response should be a JSON object in the format {oneDay: estimate, fiveDay:estimate, 10Day:estimate,thirtyDay:estimate, sixMonths:estimate, oneYear:estimate}, where estimate are all numbers. Remember, only return JSON object!");
     };
 
 
@@ -36,7 +36,7 @@ function ChatGPT() {
             <h1>Hello ChatGPT</h1>
             <p>Current Bitcoin Price: ${bitcoinPrice}</p>
             <button onClick={handleGetPredictionsClick}>Get Predictions</button>
-            {gptResponse && <p>Prediction: {gptResponse}</p>}
+            <p>{gptResponse}</p>
         </div>
     );
 };
