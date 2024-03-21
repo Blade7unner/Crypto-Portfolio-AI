@@ -82,7 +82,7 @@ const ChartComponent = ({ rawData, stockName, move }) => {
       <button 
         ref={buttonRef} 
         style={{ 
-          backgroundColor: isSaved ? 'green' : 'blue', 
+          backgroundColor: isSaved ? 'green' : 'black', 
           color: '#fff', 
           border: 'none', 
           padding: '5px 10px', 
