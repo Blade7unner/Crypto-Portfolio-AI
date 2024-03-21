@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from "react";
 import ApexCharts from 'apexcharts';
 
 const ChartComponent = ({ rawData, stockName }) => {
-    console.log(rawData)
-    console.log(stockName)
   const chartRef = useRef(null);
 
   useEffect(() => {
