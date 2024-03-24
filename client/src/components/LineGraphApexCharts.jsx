@@ -1,38 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import ApexCharts from 'apexcharts';
+import { useAuth } from '../contexts/AuthContext';
+import FavoriteButton from './FavoriteButton';
 
 const ChartComponent = ({ rawData, stockName, move }) => {
   const chartRef = useRef(null);
-  const buttonRef = useRef(null);
-  const [isSaved, setIsSaved] = useState(false);
-  
-  useEffect(() => {
-    const fetchFavoriteStatus = async () => {
-      const token = localStorage.getItem('token');
-      
-      if (token) {
-        try {
-          const response = await fetch(`http://localhost:3001/api/user/favorites/${stockName}`, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` },
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            setIsSaved(data.isFavorite);
-          } else {
-            throw new Error('Failed to fetch favorite status');
-          }
-        } catch (error) {
-          console.error('Failed to fetch favorite status:', error);
-        }
-      } else {
-        console.log('User is not logged in.');
-        setIsSaved(false);
-      }
-    };
-    fetchFavoriteStatus();
-  }, [stockName]);
+  const { userFavorites, setUserFavorites } = useAuth();
 
   useEffect(() => {
     const parseData = (rawData) => {
@@ -74,7 +47,7 @@ const ChartComponent = ({ rawData, stockName, move }) => {
         xaxis: {
           type: 'datetime',
           labels: {
-            formatter: function(val) {
+            formatter: function (val) {
               return new Date(val).toLocaleDateString();
             }
           }
@@ -88,11 +61,6 @@ const ChartComponent = ({ rawData, stockName, move }) => {
     const seriesData = parseData(rawData);
     renderChart(seriesData);
 
-    const button = buttonRef.current;
-    button.style.position = 'absolute';
-    button.style.top = '0px'; // Adjust the top position as needed
-    button.style.left = '210px'; // Adjust the left position as needed
-
     return () => {
       if (chartRef.current) {
         chartRef.current.innerHTML = '';
@@ -100,53 +68,17 @@ const ChartComponent = ({ rawData, stockName, move }) => {
     };
   }, []);
 
-  const toggleFavorite = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('No token available');
-      }
-      const method = isSaved ? 'DELETE' : 'POST';
-      const url = `http://localhost:3001/api/user/favorites${isSaved ? `/${stockName}` : ''}`;
-      const body = isSaved ? null : JSON.stringify({ stockSymbol: stockName });
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        ...(body && { body }),
-      });
-      if (response.ok) {
-        setIsSaved(!isSaved);
-      } else {
-        const errorData = await response.json();
-        console.error('Failed to update favorite status:', errorData.error);
-        alert(`Failed to update favorite status: ${errorData.error}`);
-      }
-    } catch (error) {
-      console.error('Error toggling favorite status:', error);
-      alert(`Please log in to save stocks to favorites.`);
-    }
-  };
-
   return (
     <div style={{ position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+        <h2 style={{ flexGrow: 1, margin: 0 }}>{`${stockName} (Recommendation: ${move})`}</h2>
+        <FavoriteButton
+          stockName={stockName}
+          userFavorites={userFavorites}
+          setUserFavorites={setUserFavorites}
+        />
+      </div>
       <div id="chart" ref={chartRef}></div>
-      <button 
-        ref={buttonRef} 
-        style={{ 
-          backgroundColor: isSaved ? 'green' : 'blue', 
-          color: isSaved ? '#fff' : '#fff', 
-          border: 'none', 
-          padding: '5px 10px', 
-          borderRadius: '5px', 
-          cursor: 'pointer' 
-        }} 
-        onClick={toggleFavorite} 
-      >
-        {isSaved ? "Stock saved!" : "Save stock to favorites"}
-      </button>
     </div>
   );
 };

@@ -1,34 +1,33 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-
-const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-    }
-  }
-`;
+import { LOGIN_MUTATION } from '../utils/mutations';
+import * as auth from '../utils/auth'; // Adjust the path as necessary
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
   const navigate = useNavigate();
   const [loginMutation, { error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      login(data.login.token);
-      navigate('/');
+      if (data && data.login && data.login.token) {
+        auth.login(data.login.token); // Use the login function from auth.js
+        navigate('/');
+      }
     },
     onError: (err) => {
       console.error(err.message);
     },
   });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    loginMutation({ variables: { email, password } });
+    try {
+      await loginMutation({ variables: { email, password } });
+      // Navigation and login handling moved to the mutation's onCompleted
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (
