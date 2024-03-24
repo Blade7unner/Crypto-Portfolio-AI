@@ -1,32 +1,23 @@
 import React, { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
-import { useAuth } from '../contexts/AuthContext';
+import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-
-const SIGNUP_MUTATION = gql`
-  mutation Signup($email: String!, $password: String!) {
-    signup(email: $email, password: $password) {
-      token
-      user {
-        _id
-        email
-      }
-    }
-  }
-`;
+import { SIGNUP_MUTATION } from '../utils/mutations';
+import * as auth from '../utils/auth'; // Adjust the path as necessary
 
 function SignupForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [signup, { loading }] = useMutation(SIGNUP_MUTATION, {
     onCompleted: (data) => {
-      login(data.signup.token);
-      navigate('/');
+      if (data && data.signup && data.signup.token) {
+        auth.login(data.signup.token); // Use the login function from auth.js
+        setSuccessMessage('Signup successful! Redirecting...');
+        setTimeout(() => navigate('/'), 2000); // Redirect after a short delay
+      }
     },
     onError: (error) => {
       setErrorMessage(error.message);
@@ -42,7 +33,7 @@ function SignupForm() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-      <h2>Sign Up</h2>
+        <h2>Sign Up</h2>
         <input
           type="email"
           value={email}
