@@ -12,29 +12,32 @@ import FavoritesPage from './components/FavoritesPage';
 import apolloClient from './apolloClient.js';
 import { AuthProvider } from './contexts/AuthContext';
 import CryptoPrices from './components/CryptoPrices'; // Import CryptoPrices component
-import './App.css';
+import { NeuralNetwork } from './components/NeuralNetwork.jsx';
+import './index.css';
 
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
       <AuthProvider>
-        <a href="/">
-          <div className="logo"><img src="/logo.svg" alt="Logo" /></div>
+        <a href='/'>
+          <div className='logo'>
+            <img src='/logo.svg' alt='Logo' />
+          </div>
         </a>
         <Router>
           <div>
             <Navigation />
-            <div className="page-container">
+            <div className='page-container'>
               {/* Insert CryptoPrices component here */}
               <CryptoPrices />
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/AI" element={<AI />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/signup" element={<SignupForm />} />
-                <Route path="/favorites" element={<FavoritesPage />} />
+                <Route path='/' element={<Home />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/contact' element={<Contact />} />
+                <Route path='/AI' element={<AI />} />
+                <Route path='/login' element={<LoginForm />} />
+                <Route path='/signup' element={<SignupForm />} />
+                <Route path='/favorites' element={<FavoritesPage />} />
               </Routes>
             </div>
           </div>

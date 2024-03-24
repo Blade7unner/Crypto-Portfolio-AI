@@ -9,4 +9,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
     </AuthProvider>
   </React.StrictMode>,
-)
+);
