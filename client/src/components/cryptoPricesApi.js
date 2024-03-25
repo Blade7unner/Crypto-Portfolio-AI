@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const fetchCryptoData = async () => {
+const fetchCryptoPrices = async () => {
     try {
       const response = await axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH&tsyms=USD', {
         params: {
@@ -15,6 +15,6 @@ const fetchCryptoData = async () => {
     }
   };
   
-  export default fetchCryptoData;
+  export default fetchCryptoPrices;
 
   
