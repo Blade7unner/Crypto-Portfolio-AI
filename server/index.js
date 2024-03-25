@@ -28,6 +28,14 @@ if (process.env.NODE_ENV !== 'production') {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    // Ensure 'req' is defined and then pass it to authMiddleware
+    if (!req) {
+      console.error('Request object is undefined in context setup');
+      throw new Error('Request object is undefined');
+    }
+    return await authMiddleware(req);
+  },
 });
 
 const startApolloServer = async () => {
@@ -35,9 +43,13 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
   app.use('/api', apiRoutes);
-  app.use('/graphql', expressMiddleware(server, {
-    context: authMiddleware, cors: false
-  }));
+  app.use(
+    '/graphql',
+    expressMiddleware(server, {
+      context: async ({ req }) => await authMiddleware(req),
+      cors: false,
+    })
+  );
 
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));

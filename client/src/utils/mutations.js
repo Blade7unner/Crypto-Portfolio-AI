@@ -1,18 +1,16 @@
 import { gql } from '@apollo/client';
 
 export const ADD_FAVORITE_MUTATION = gql`
-  mutation AddFavorite($favItem: String! $email: String!) {
-    addFavorite(favItem: $favItem, email: $email) {
-      _id
-      favItem
+  mutation AddFavorite($stockName: String!) {
+    addFavorite(stockName: $stockName) {
+      favorites
     }
   }
 `;
 
 export const REMOVE_FAVORITE_MUTATION = gql`
-  mutation RemoveFavorite($favoriteId: ID!) {
-    removeFavorite(favoriteId: $favoriteId) {
-      _id
+  mutation RemoveFavorite($stockName: String!) {
+    removeFavorite(stockName: $stockName) {
       favorites
     }
   }

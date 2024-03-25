@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_FAVORITE_MUTATION, REMOVE_FAVORITE_MUTATION } from '../utils/mutations';
 import { jwtDecode } from 'jwt-decode'; // Corrected import
@@ -10,37 +10,38 @@ const FavoriteButton = ({ stockName, userFavorites, setUserFavorites }) => {
     // Determine if the current item is saved
     const isSaved = userFavorites.includes(stockName);
 
+
+    useEffect(() => {
+        // Load favorites from localStorage on mount
+        const storedFavorites = localStorage.getItem('userFavorites');
+        if (storedFavorites) {
+            setUserFavorites(JSON.parse(storedFavorites));
+        }
+    }, [setUserFavorites]);
+
     const handleFavoriteToggle = async () => {
-        // Assuming your token is stored in localStorage
         const token = localStorage.getItem('token');
-        
         if (!token) {
             console.log("No token found");
-            // Handle the case where the token isn't found, e.g., redirect to login
             return;
         }
         
-        // Decode the token to get the user's details
         const decoded = jwtDecode(token);
-        const userEmail = decoded.email; // Adjust based on the actual key used in your token payload
+        const userEmail = decoded.email;
         
         if (isSaved) {
-            // Remove favorite
-            await removeFavorite({
-                variables: { favoriteId: stockName }
-            });
-            // Update local UI state
-            setUserFavorites(prevFavorites => prevFavorites.filter(fav => fav !== stockName));
+            await removeFavorite({ variables: { stockName: stockName } });
+            const updatedFavorites = userFavorites.filter(fav => fav !== stockName);
+            setUserFavorites(updatedFavorites);
+            localStorage.setItem('userFavorites', JSON.stringify(updatedFavorites));
         } else {
-            // Add favorite
-            await addFavorite({
-                variables: { favItem: stockName, email: userEmail }
-            });
-            // Update local UI state
-            setUserFavorites(prevFavorites => [...prevFavorites, stockName]);
+            await addFavorite({ variables: { stockName: stockName, email: userEmail } });
+            const updatedFavorites = [...userFavorites, stockName];
+            setUserFavorites(updatedFavorites);
+            localStorage.setItem('userFavorites', JSON.stringify(updatedFavorites));
         }
     };
-    
+
     return (
         <button onClick={handleFavoriteToggle}>
             {isSaved ? 'Remove from Favorites' : 'Add to Favorites'}

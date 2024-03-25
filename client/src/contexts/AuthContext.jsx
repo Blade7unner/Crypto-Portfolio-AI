@@ -21,7 +21,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userFavorites');
     setIsLoggedIn(false);
+    setUserFavorites([]);
     window.location.assign('/');
   };
 
