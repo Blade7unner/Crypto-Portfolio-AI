@@ -5,7 +5,7 @@ const MembershipCheckout = () => {
     <div>
       <h2>Membership Checkout</h2>
       <a href="https://buy.stripe.com/test_dR6dS7cI89zmb8AbII" target="_blank" rel="noopener noreferrer">
-        <button>Subscribe Now</button>
+        <button className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400'>Donate Here!</button>
       </a>
     </div>
   );

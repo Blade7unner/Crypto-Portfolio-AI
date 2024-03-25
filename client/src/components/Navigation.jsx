@@ -39,13 +39,13 @@ function Navigation() {
             Contact
           </Link>
         </li>
-        <li className='hover:bg-green-400 p-2 rounded flex-1'>
-          <Link to='/AI' className='text-white text-4xl block'>
-            AI
-          </Link>
-        </li>
         {isLoggedIn ? (
           <>
+            <li className='hover:bg-green-400 p-2 rounded flex-1'>
+              <Link to='/AI' className='text-white text-4xl block'>
+                AI
+              </Link>
+            </li>
             <li className='hover:bg-green-400 p-2 rounded flex-1'>
               <Link to='/favorites' className='text-white text-4xl block'>
                 Favorites
@@ -76,7 +76,7 @@ function Navigation() {
         )}
         <li className='hover:bg-green-400 p-2 rounded flex-1'>
           <Link to='/payment' className='text-white text-4xl block'>
-            Payment
+            Donation
           </Link>
         </li>
       </ul>
