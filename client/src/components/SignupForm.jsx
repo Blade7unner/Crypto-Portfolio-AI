@@ -35,6 +35,7 @@ function SignupForm() {
       <form onSubmit={handleSubmit}>
         <h2>Sign Up</h2>
         <input
+          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -42,13 +43,14 @@ function SignupForm() {
           required
         />
         <input
+          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           required
         />
-        <button type="submit" disabled={loading}>Sign Up</button>
+        <button type="submit" disabled={loading} className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400'>Sign Up</button>
       </form>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}

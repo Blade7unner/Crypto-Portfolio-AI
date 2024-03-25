@@ -43,7 +43,7 @@ const FavoriteButton = ({ stockName, userFavorites, setUserFavorites }) => {
     };
 
     return (
-        <button onClick={handleFavoriteToggle}>
+        <button className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400' onClick={handleFavoriteToggle}>
             {isSaved ? 'Remove from Favorites' : 'Add to Favorites'}
         </button>
     );
