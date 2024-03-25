@@ -11,8 +11,8 @@ import AI from './pages/AI';
 import FavoritesPage from './components/FavoritesPage';
 import apolloClient from './apolloClient.js';
 import { AuthProvider } from './contexts/AuthContext';
-import CryptoPrices from './components/CryptoPrices'; // Import CryptoPrices component
-import { NeuralNetwork } from './components/NeuralNetwork.jsx';
+import CryptoPrices from './components/CryptoPrices';
+import MembershipCheckout from './components/MembershipCheckout';
 import './index.css';
 
 function App() {
@@ -28,7 +28,6 @@ function App() {
           <div>
             <Navigation />
             <div className='page-container'>
-              {/* Insert CryptoPrices component here */}
               <CryptoPrices />
               <Routes>
                 <Route path='/' element={<Home />} />
@@ -38,6 +37,7 @@ function App() {
                 <Route path='/login' element={<LoginForm />} />
                 <Route path='/signup' element={<SignupForm />} />
                 <Route path='/favorites' element={<FavoritesPage />} />
+                <Route path='/payment' element={<MembershipCheckout />} />
               </Routes>
             </div>
           </div>
