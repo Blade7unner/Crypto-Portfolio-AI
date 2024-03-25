@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { User, Favorite } = require('../models'); // Assuming you have User and Favorite models
+const { User } = require('../models'); // Assuming you have User and Favorite models
+const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
@@ -14,18 +15,6 @@ const resolvers = {
       }
       return user;
     },
-    favorites: async (_, { email }) => {
-      const user = await User.findOne({ email });
-      if (!user) {
-        throw new Error('User not found');
-      }
-      return await Favorite.find({
-        '_id': { $in: user.favorites }
-      });
-    },
-    favorite: async (_, { favoriteId }) => {
-      return await Favorite.findById(favoriteId);
-    },
   },
   Mutation: {
     signup: async (_, { email, password }) => {
@@ -33,12 +22,11 @@ const resolvers = {
       if (existingUser) {
         throw new Error('User already exists with that email');
       }
-      
+
       const user = await User.create({ email, password });
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
-      });
-      
+      // Using signToken utility function to include both userId and email in the JWT
+      const token = signToken({ userId: user._id, email: user.email });
+
       return {
         token,
         user,
@@ -55,45 +43,57 @@ const resolvers = {
         throw new Error('Invalid password');
       }
 
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
-      });
+      // Using signToken utility function to include both userId and email in the JWT
+      const token = signToken({ userId: user._id, email: user.email });
 
       return {
         token,
         user,
       };
     },
-    addFavorite: async (_, { favItem, email }) => {
-      const user = await User.findOne({ email });
-      if (!user) {
+
+    addFavorite: async (_, { stockName }, context) => {
+      // Check if user is authenticated and extract userId from context
+      const { user } = context;
+      if (!user || !user.userId) {
+        throw new Error('Authentication required');
+      }
+    
+      // Find the user by userId instead of hardcoded email
+      const foundUser = await User.findById(user.userId);
+      if (!foundUser) {
         throw new Error('User not found');
       }
       
-      const favorite = await Favorite.create({ favItem });
-      user.favorites.push(favorite._id);
-      await user.save();
-      
-      return favorite;
-    },
-    removeFavorite: async (_, { favoriteId }) => {
-      const favorite = await Favorite.findById(favoriteId);
-      if (!favorite) {
-        throw new Error('Favorite not found');
+      // Add stockName to favorites if not already included
+      if (!foundUser.favorites.includes(stockName)) { 
+        foundUser.favorites.push(stockName);
+        await foundUser.save();
       }
       
-      await User.updateMany({}, { $pull: { favorites: favorite._id } });
-      await favorite.remove();
-      
-      return favorite;
+      return foundUser;
     },
-  },
-  User: {
-    favorites: async (user) => {
-      return await Favorite.find({
-        '_id': { $in: user.favorites }
-      });
-    },
+    
+    removeFavorite: async (_, { stockName }, context) => {
+      // Check if user is authenticated and extract userId from context
+      const { user } = context;
+      if (!user || !user.userId) {
+        throw new Error('Authentication required');
+      }
+    
+      // Find the user by userId instead of hardcoded email
+      const foundUser = await User.findById(user.userId);
+      if (!foundUser) {
+        throw new Error('User not found');
+      }
+    
+      // Remove stockName from favorites
+      const updatedFavorites = foundUser.favorites.filter(fav => fav !== stockName);
+      foundUser.favorites = updatedFavorites;
+      await foundUser.save();
+    
+      return foundUser;
+    },    
   },
 };
 

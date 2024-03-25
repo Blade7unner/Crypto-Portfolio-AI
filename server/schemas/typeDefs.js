@@ -7,11 +7,6 @@ const typeDefs = gql`
     favorites: [String]!
   }
 
-  type Favorite {
-    _id: ID!
-    favItem: String!
-  }
-
   type Auth {
     token: ID!
     user: User
@@ -20,15 +15,13 @@ const typeDefs = gql`
   type Query {
     users: [User]
     user(email: String!): User
-    favorites(email: String!): [Favorite]
-    favorite(favoriteId: ID!): Favorite
   }
 
   type Mutation {
     signup(email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    addFavorite(favItem: String! email: String!): Favorite
-    removeFavorite(favoriteId: ID!): Favorite
+    addFavorite(stockName: String!): User
+    removeFavorite(stockName: String!): User
   }
 `;
 
