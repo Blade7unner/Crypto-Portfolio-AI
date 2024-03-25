@@ -77,6 +77,11 @@ function Navigation() {
         <li className='hover:bg-gray-700 p-2 rounded flex-1'>
           <CryptoData />
         </li>
+        <li className='hover:bg-gray-700 p-2 rounded flex-1'>
+          <Link to='/payment' className='text-white text-4xl block'>
+            Payment
+          </Link>
+        </li>
       </ul>
     </nav>
   );
