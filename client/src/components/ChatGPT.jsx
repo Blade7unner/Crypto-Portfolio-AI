@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import fetchCryptoData from './chatgptApi';
+import fetchCryptoPrices from "./cryptoPricesApi";
 //import { useGlobal } from "../contexts/GlobalContext";
 
 function ChatGPT() {
@@ -18,7 +18,7 @@ function ChatGPT() {
         const fetchData = async () => {
           try {
             // Fetch Bitcoin data
-            const newCryptoData = await fetchCryptoData();
+            const newCryptoData = await fetchCryptoPrices();
             setCryptoPrices({BTC: newCryptoData.BTC.USD, ETH: newCryptoData.ETH.USD});
             if (filter === 'Bitcoin') {
                 console.log("The filter function is woring");
