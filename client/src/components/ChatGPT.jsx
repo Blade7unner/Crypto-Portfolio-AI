@@ -21,7 +21,7 @@ function ChatGPT() {
         const newCryptoData = await fetchCryptoPrices();
         setCryptoPrices({ BTC: newCryptoData.BTC.USD, ETH: newCryptoData.ETH.USD });
         if (filter === 'Bitcoin') {
-          console.log('The filter function is woring');
+          console.log('The filter function is working');
           setSelectCoinPrice(newCryptoData.BTC.USD);
         }
       } catch (error) {
@@ -78,27 +78,69 @@ function ChatGPT() {
   };
 
   return (
-    <div>
-      <label>
-        Select a coin:
-        <select value={filter} onChange={handleFilterChange}>
-          <option value='Bitcoin'>BTC</option>
-          <option value='Ethereum'>ETH</option>
-        </select>
-      </label>
-      {/* <p>Current Bitcoin Price: {cryptoPrices.BTC}</p>
-      <p>Current Ethereum Price: {cryptoPrices.ETH}</p>
-      <p>Selected Coin: {filter}</p>
-      <p>Selected Coin Price: ${selectCoinPrice}</p> */}
-      <button onClick={handleGetPredictionsClick} className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400'>
-        Get ChatGPT Predictions
-      </button>
-      <p>{isLoading ? 'Loading...' : 'One Day: ' + oneDay}</p>
-      <p>{isLoading ? '' : 'Five Days: ' + fiveDay}</p>
-      <p>{isLoading ? '' : 'Ten Days: ' + tenDay}</p>
-      <p>{isLoading ? '' : 'Thirty Days: ' + thirtyDay}</p>
-      <p>{isLoading ? '' : 'Six Months: ' + sixMonths}</p>
-      <p>{isLoading ? '' : 'One Year: ' + oneYear}</p>
+    <div className="p-4 max-w-4xl mx-auto"> {/* Centering container */}
+      {/* Wrap select menu and button in a flex container for centering */}
+      <div className="flex flex-col items-center space-y-4 mb-6">
+        <div className="w-1/2"> {/* Half width wrapper for select menu */}
+          <label className="block mb-4 w-full">
+            Select a coin:
+            <select 
+              value={filter} 
+              onChange={handleFilterChange}
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+            >
+              <option value='Bitcoin'>BTC</option>
+              <option value='Ethereum'>ETH</option>
+            </select>
+          </label>
+        </div>
+        <div className="w-1/2"> {/* Half width wrapper for button */}
+          <button 
+            onClick={handleGetPredictionsClick} 
+            className="bg-orange-400 text-white text-xl rounded-lg w-full py-2 hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out"
+          >
+            {isLoading ? 'Loading...' : 'Get ChatGPT Predictions'} {/* Conditional button text */}
+          </button>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto shadow-xl rounded-lg">
+        <table className="w-full table-auto text-center">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+              <th className="px-6 py-3">Timeframe</th>
+              <th className="px-6 py-3">Prediction</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {/* Render rows based on data availability */}
+            <tr className="hover:bg-orange-50 transition duration-150 ease-in-out">
+              <td className="px-6 py-4 text-xl font-medium">One Day</td>
+              <td className="px-6 py-4">{oneDay ? oneDay : 'N/A'}</td>
+            </tr>
+            <tr className="hover:bg-orange-50 transition duration-150 ease-in-out">
+              <td className="px-6 py-4 text-xl font-medium">Five Day</td>
+              <td className="px-6 py-4">{fiveDay ? fiveDay : 'N/A'}</td>
+            </tr>
+            <tr className="hover:bg-orange-50 transition duration-150 ease-in-out">
+              <td className="px-6 py-4 text-xl font-medium">Ten Day</td>
+              <td className="px-6 py-4">{tenDay ? tenDay : 'N/A'}</td>
+            </tr>
+            <tr className="hover:bg-orange-50 transition duration-150 ease-in-out">
+              <td className="px-6 py-4 text-xl font-medium">Thirty Day</td>
+              <td className="px-6 py-4">{thirtyDay ? thirtyDay : 'N/A'}</td>
+            </tr>
+            <tr className="hover:bg-orange-50 transition duration-150 ease-in-out">
+              <td className="px-6 py-4 text-xl font-medium">Six Months</td>
+              <td className="px-6 py-4">{sixMonths ? sixMonths : 'N/A'}</td>
+            </tr>
+            <tr className="hover:bg-orange-50 transition duration-150 ease-in-out">
+              <td className="px-6 py-4 text-xl font-medium">One Year</td>
+              <td className="px-6 py-4">{oneYear ? oneYear : 'N/A'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
