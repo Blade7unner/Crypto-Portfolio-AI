@@ -6,7 +6,7 @@ export const NeuralNetwork = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/neuralNetworkPrediction');
+        const response = await fetch('/api/neuralNetworkPrediction');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
