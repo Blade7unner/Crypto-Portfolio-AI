@@ -28,7 +28,6 @@ function App() {
           <div>
             <Navigation />
             <div className='page-container'>
-              <CryptoPrices />
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/about' element={<About />} />
