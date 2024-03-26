@@ -34,7 +34,7 @@ function ChatGPT() {
   function sendMessageToServer(prompt) {
     setIsLoading(true);
 
-    fetch('/api/openai', {
+    fetch('https://myapp.onrender.com/api/neuralNetworkPrediction', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
