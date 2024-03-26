@@ -20,6 +20,7 @@
     "fs": "^0.0.1-security",
     "graphql": "^16.8.1",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.5.0",
     "mongoose": "^8.2.1",
     "openai": "^4.24.7"
   }
