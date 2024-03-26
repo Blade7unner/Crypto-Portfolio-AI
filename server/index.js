@@ -22,6 +22,7 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   const corsOptions = {
     origin: ['https://crypto-portfolio-ai.onrender.com'],
+    credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
   };
   app.use(cors(corsOptions));
