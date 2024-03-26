@@ -34,10 +34,6 @@ const ChartComponent = ({ rawData, stockName, move }) => {
         stroke: {
           curve: 'straight'
         },
-        title: {
-          text: `${stockName} (Recommendation: ${move})`,
-          align: 'left'
-        },
         grid: {
           row: {
             colors: ['#f3f3f3', 'transparent'],
