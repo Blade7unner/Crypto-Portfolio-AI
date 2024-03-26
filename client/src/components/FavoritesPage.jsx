@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import LineGraphApexCharts from '../components/LineGraphApexCharts';
 import fetchCryptoData from '../components/fetchCryptoData';
+import CryptoPrices from './CryptoPrices';
 // Import your Auth Context or another method of accessing auth state
 // import { AuthContext } from '../contexts/AuthContext';
 
@@ -43,6 +44,7 @@ const FavoritesPage = () => {
 
     return (
         <div>
+            <CryptoPrices />
             <h2>Your Favorites</h2>
             <ul>
                 {userFavorites.length > 0 ? (
