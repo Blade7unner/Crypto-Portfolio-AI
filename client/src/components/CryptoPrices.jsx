@@ -22,18 +22,21 @@ const CryptoPrices = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Cryptocurrency Prices</h2>
-      <div>
-        <FaBitcoin />
-        <span>Bitcoin Price: ${bitcoinPrice}</span>
+    <div className="bg-white shadow-md rounded-lg p-6 mb-8"> {/* Card container with Tailwind styling */}
+    <h2 className="text-lg font-semibold">Cryptocurrency Prices</h2>
+    <div className="flex justify-start items-center gap-4 mt-4"> {/* Align items to the left and add some gap */}
+      <div className="flex items-center">
+        <FaBitcoin className="text-yellow-500" />
+        <span className="ml-2">${bitcoinPrice}</span>
       </div>
-      <div>
-        <FaEthereum />
-        <span>Ethereum Price: ${ethereumPrice}</span>
+      <div className="flex items-center">
+        <FaEthereum className="text-blue-600" />
+        <span className="ml-2">${ethereumPrice}</span>
       </div>
     </div>
-  );
+  </div>
+);
 };
+
 
 export default CryptoPrices;
