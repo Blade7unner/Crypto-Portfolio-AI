@@ -16,13 +16,15 @@ if (process.env.NODE_ENV !== 'production') {
   const corsOptions = {
     origin: ['http://localhost:5173'],
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
   };
   app.use(cors(corsOptions));
 } else {
-  app.use(cors({
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
+  const corsOptions = {
+    origin: ['https://crypto-portfolio-ai.onrender.com'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  };
+  app.use(cors(corsOptions));
 }
 
 const server = new ApolloServer({
@@ -48,7 +50,7 @@ const startApolloServer = async () => {
     expressMiddleware(server, {
       context: async ({ req }) => await authMiddleware(req),
       cors: true,
-    })
+    }),
   );
 
   if (process.env.NODE_ENV === 'production') {
