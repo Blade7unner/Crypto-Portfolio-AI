@@ -6,7 +6,7 @@ export const NeuralNetwork = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://myapp.onrender.com/api/neuralNetworkPrediction');
+        const response = await fetch('https://crypto-portfolio-ai.onrender.com/api/neuralNetworkPrediction');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
