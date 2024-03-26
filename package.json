@@ -10,7 +10,9 @@
   },
   "scripts": {
     "start": "concurrently --kill-others \"npm run dev --prefix client\" \"node server/index.js\"",
-    "install": "cd server && npm i && cd ../client && npm i"
+    "install": "cd server && npm i && cd ../client && npm i",
+    "build": "cd client && npm run build",
+    "render-build":"npm install && npm run build"
   },
   "keywords": [],
   "author": "",
