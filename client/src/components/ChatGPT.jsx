@@ -34,7 +34,7 @@ function ChatGPT() {
   function sendMessageToServer(prompt) {
     setIsLoading(true);
 
-    fetch('http://localhost:3001/api/openai', {
+    fetch('/api/openai', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
