@@ -79,7 +79,6 @@ function ChatGPT() {
 
   return (
     <div>
-      <h1>Hello ChatGPT</h1>
       <label>
         Select a coin:
         <select value={filter} onChange={handleFilterChange}>
@@ -87,10 +86,10 @@ function ChatGPT() {
           <option value='Ethereum'>ETH</option>
         </select>
       </label>
-      <p>Current Bitcoin Price: {cryptoPrices.BTC}</p>
+      {/* <p>Current Bitcoin Price: {cryptoPrices.BTC}</p>
       <p>Current Ethereum Price: {cryptoPrices.ETH}</p>
       <p>Selected Coin: {filter}</p>
-      <p>Selected Coin Price: ${selectCoinPrice}</p>
+      <p>Selected Coin Price: ${selectCoinPrice}</p> */}
       <button onClick={handleGetPredictionsClick} className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400'>
         Get ChatGPT Predictions
       </button>
