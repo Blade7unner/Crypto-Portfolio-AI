@@ -1,8 +1,11 @@
 # Crypto Portfolio AI
 
 ## Description
+Crypto Portfolio AI is a full-stack single-page application designed to help users manage their cryptocurrency portfolios efficiently. The application provides real-time data from the CoinGecko API, allowing users to track cryptocurrency prices, manage their investments, and stay informed about market trends. Additionally, it harnesses the power of advanced AI algorithms to predict cryptocurrency prices, offering investors and traders a cutting-edge tool for navigating the volatile crypto markets.
 
-This project serves as the back end for a crypto portfolio management system, providing a RESTful API for managing cryptocurrencies and their prices. It utilizes Node.js along with Express.js for handling HTTP requests and interactions with the CoinGecko API to fetch real-time cryptocurrency data. (MORE TO BE ADDED}
+Our project analyzes vast datasets that include historical price movements, market trends, and relevant news to provide accurate, real-time predictions. This empowers our users to make informed decisions, manage risks more effectively, and capitalize on potential opportunities. With our user-friendly interface and robust analytical tools, we're democratizing financial insights and paving the way for a new era of informed crypto investing.
+
+Disclaimer: We are not financial advisors.
 
 ## Table of Contents
 
