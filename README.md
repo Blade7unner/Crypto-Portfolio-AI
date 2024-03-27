@@ -45,8 +45,9 @@ Add your CoinGecko API key to the .env file: COINGECKO_API_KEY=your_api_key
 
 ## API Documentation
 
-- GET /api/cryptocurrency: Retrieve real-time data for specific cryptocurrencies.
-- GET /api/top-gainers-losers: Retrieve top gainers and losers in the cryptocurrency market.
+GET /api/cryptocurrency: Retrieve real-time data for specific cryptocurrencies.
+GET /api/top-gainers-losers: Retrieve top gainers and losers in the cryptocurrency market.
+POST /api/predict-price: Make predictions about future cryptocurrency prices using AI from the ChatGPT API.
 
 ## Walkthrough Videos
 
@@ -56,16 +57,11 @@ Add your CoinGecko API key to the .env file: COINGECKO_API_KEY=your_api_key
 
 - We welcome contributions from the community! Please refer to the CONTRIBUTING.md file for guidelines on how to contribute to this project.
 
-## License
-
-- This project is licensed under the.....
-
-
-
 ## Credits
 
-- The development team behind Node.js, Express.js, and Sequelize ORM for providing powerful tools for building back end applications.
+- The development team behind Node.js, Express.js, and MongoDB for providing powerful tools for building back end applications.
 - The CoinGecko API team for providing real-time cryptocurrency data.
+- The ChatGPT API team for providing AI predictions.
 - Contributors to the project who have helped improve its functionality and user experience.
 
 ## Support/Contact
