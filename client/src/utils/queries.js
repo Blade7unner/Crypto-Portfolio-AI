@@ -9,3 +9,9 @@ export const GET_USER_BY_EMAIL = gql`
     }
   }
 `;
+
+export const GET_USER_FAVORITES = gql`
+  query GetUserFavorites {
+    favorites
+  }
+`;

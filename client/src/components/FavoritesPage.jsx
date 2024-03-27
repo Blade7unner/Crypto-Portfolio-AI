@@ -1,54 +1,47 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
 import LineGraphApexCharts from '../components/LineGraphApexCharts';
 import fetchCryptoData from '../components/fetchCryptoData';
 import CryptoPrices from './CryptoPrices';
-// Import your Auth Context or another method of accessing auth state
-// import { AuthContext } from '../contexts/AuthContext';
+import { GET_USER_FAVORITES } from '../utils/queries'; // Ensure this is defined and imported correctly
 
 const FavoritesPage = () => {
-    const [userFavorites, setUserFavorites] = useState([]);
     const [cryptoData, setCryptoData] = useState({});
     const [move, setMove] = useState({});
-    // If using AuthContext to track login state
-    // const { isLoggedIn } = useContext(AuthContext);
-
-    useEffect(() => {
-        // Load favorites from localStorage on mount or upon login state change
-        const storedFavorites = localStorage.getItem('userFavorites');
-        if (storedFavorites) {
-            setUserFavorites(JSON.parse(storedFavorites));
-        }
-    }, [/* isLoggedIn */]); // Add a dependency on user login state here if available
+    const { loading, error, data } = useQuery(GET_USER_FAVORITES); // Use the adjusted query name here
 
     useEffect(() => {
         const fetchDataForFavorites = async () => {
-            const data = {};
-            const moveData = {};
-            for (const stockName of userFavorites) {
+            const updatedData = {};
+            const updatedMoveData = {};
+            const favorites = data.favorites || [];
+            for (const stockName of favorites) {
                 try {
-                    const { restructuredData, move } = await fetchCryptoData(stockName); // Ensure this function is correctly implemented
-                    data[stockName] = restructuredData;
-                    moveData[stockName] = move;
+                    const { restructuredData, move } = await fetchCryptoData(stockName);
+                    updatedData[stockName] = restructuredData;
+                    updatedMoveData[stockName] = move;
                 } catch (error) {
                     console.error(`Failed to fetch data for ${stockName}:`, error);
                 }
             }
-            setCryptoData(data);
-            setMove(moveData);
+            setCryptoData(updatedData);
+            setMove(updatedMoveData);
         };
 
-        if (userFavorites.length > 0) {
+        if (data && data.favorites && data.favorites.length > 0) {
             fetchDataForFavorites();
         }
-    }, [userFavorites]);
+    }, [data]);
 
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
     return (
         <div>
             <CryptoPrices />
             <h2 className="text-2xl">Your Favorites</h2>
             <ul>
-                {userFavorites.length > 0 ? (
-                    userFavorites.map((stockName, index) => (
+            {data && data.favorites && data.favorites.length > 0 ? (
+                    data.favorites.map((stockName, index) => (
                         <li key={index}>
                             {cryptoData[stockName] && (
                                 <LineGraphApexCharts
