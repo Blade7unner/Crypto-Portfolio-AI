@@ -23,7 +23,7 @@ function Navigation() {
 
   return (
     <nav className='bg-orange-400 text-white p-4'>
-      <ul className='flex justify-between items-center text-center'>
+      <ul className='flex justify-between items-center text-center flex-wrap'>
         <li className='hover:bg-green-400 p-2 rounded flex-1'>
           <Link to='/' className='text-white text-3xl block'>
             Home
@@ -76,7 +76,7 @@ function Navigation() {
         )}
         <li className='hover:bg-green-400 p-2 rounded flex-1'>
           <Link to='/payment' className='text-white text-3xl block'>
-            Donate!
+            Donation
           </Link>
         </li>
       </ul>
