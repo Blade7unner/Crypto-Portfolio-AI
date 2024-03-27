@@ -3,6 +3,7 @@ import fetchCryptoPrices from './cryptoPricesApi';
 //import { useGlobal } from "../contexts/GlobalContext";
 
 function ChatGPT() {
+  //Set state for loading status, filter, crypto prices, and price predictions
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState('Bitcoin');
   const [cryptoPrices, setCryptoPrices] = useState({});
@@ -14,22 +15,65 @@ function ChatGPT() {
   const [sixMonths, setSixMonths] = useState(0);
   const [oneYear, setOneYear] = useState(0);
 
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch Bitcoin data
         const newCryptoData = await fetchCryptoPrices();
-        setCryptoPrices({ BTC: newCryptoData.BTC.USD, ETH: newCryptoData.ETH.USD });
+        setCryptoPrices({
+          BTC: newCryptoData.BTC.USD,
+          ETH: newCryptoData.ETH.USD,
+          BNB: newCryptoData.BNB.USD,
+          SOL: newCryptoData.SOL.USD, 
+          ADA: newCryptoData.ADA.USD,
+          XRP: newCryptoData.XRP.USD,
+          DOT: newCryptoData.DOT.USD,
+          LTC: newCryptoData.LTC.USD,
+          LINK: newCryptoData.LINK.USD,
+          BCH: newCryptoData.BCH.USD,
+        });
+        //Logic to set the price of the selected coin
         if (filter === 'Bitcoin') {
-          console.log('The filter function is working');
           setSelectCoinPrice(newCryptoData.BTC.USD);
+        } 
+        else if (filter === 'Ethereum') {
+          setSelectCoinPrice(newCryptoData.ETH.USD);
+        }
+        else if (filter === 'Solana') {
+          setSelectCoinPrice(newCryptoData.SOL.USD);
+        }
+        else if (filter === 'Cardano') {
+          console.log('The filter function is working');
+          setSelectCoinPrice(newCryptoData.ADA.USD);
+        } 
+        else if (filter === 'Binance') {
+          setSelectCoinPrice(newCryptoData.BNB.USD);
+        } 
+        else if (filter === 'Ripple') {
+          setSelectCoinPrice(newCryptoData.XRP.USD);
+        }
+        else if (filter === 'Polkadot') {
+          setSelectCoinPrice(newCryptoData.DOT.USD);
+        }
+        else if (filter === 'Litecoin') {
+          setSelectCoinPrice(newCryptoData.LTC.USD);
+        }
+        else if (filter === 'Chainlink') {
+          setSelectCoinPrice(newCryptoData.LINK.USD);
+        }
+        else if (filter === 'Bitcoin Cash') {
+          setSelectCoinPrice(newCryptoData.BCH.USD);
         }
       } catch (error) {
         console.error('Error fetching cryptocurrency data:', error);
       }
     };
     fetchData();
-  }, []);
+    //Call the fetchData function when the filter state changes
+  }, [filter]);
+
+  console.log('Crypto Prices:', cryptoPrices);
 
   function sendMessageToServer(prompt) {
     setIsLoading(true);
@@ -68,14 +112,7 @@ function ChatGPT() {
     console.log('THIS IS THE COIN PRICE: ' + selectCoinPrice);
   };
 
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-    if (filter === 'Bitcoin') {
-      setSelectCoinPrice(cryptoPrices.ETH);
-    } else if (filter === 'Ethereum') {
-      setSelectCoinPrice(cryptoPrices.BTC);
-    }
-  };
+  console.log(filter);
 
   return (
     <div className="p-4 max-w-4xl mx-auto"> {/* Centering container */}
@@ -84,19 +121,27 @@ function ChatGPT() {
         <div className="w-1/2"> {/* Half width wrapper for select menu */}
           <label className="block mb-4 w-full">
             Select a coin:
-            <select 
-              value={filter} 
-              onChange={handleFilterChange}
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
               className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-            >
+              >
               <option value='Bitcoin'>BTC</option>
               <option value='Ethereum'>ETH</option>
+              <option value='Binance'>BNB</option>
+              <option value='Cardano'>ADA</option>
+              <option value='Solana'>SOL</option>
+              <option value='Ripple'>XRP</option>
+              <option value='Polkadot'>DOT</option>
+              <option value='Litecoin'>LTC</option>
+              <option value='Chainlink'>LINK</option>
+              <option value='Bitcoin Cash'>BCH</option>
             </select>
           </label>
         </div>
         <div className="w-1/2"> {/* Half width wrapper for button */}
-          <button 
-            onClick={handleGetPredictionsClick} 
+          <button
+            onClick={handleGetPredictionsClick}
             className="bg-orange-400 text-white text-xl rounded-lg w-full py-2 hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out"
           >
             {isLoading ? 'Loading...' : 'Get ChatGPT Predictions'} {/* Conditional button text */}
