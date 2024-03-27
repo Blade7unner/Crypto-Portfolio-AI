@@ -32,10 +32,10 @@ function LoginForm() {
 
   return (
     <div>
-      <form onSubmit={handleLogin}>
-        <h2>Log In</h2>
+      <form onSubmit={handleLogin} className="flex flex-col items-center justify-center">
+        <h2 className="text-2xl p-4 font-bold">Log In</h2>
         <input
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="text-center shadow appearance-none border border-red-500 rounded w-half py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -43,15 +43,15 @@ function LoginForm() {
           required
         />
         <input
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="text-center shadow appearance-none border border-red-500 rounded w-half py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           required
         />
-        <button type="submit" className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400'>Log In</button>
-        {error && <p style={{ color: 'red' }}>{error.message}</p>}
+        {error && <p className="text-center text-red-500 font-bold">{error.message}</p>}
+        <button type="submit" className='bg-orange-400 text-2xl rounded-lg w-[160px] mt-4 p-2 hover:bg-green-400 text-white'>Log In</button>
       </form>
     </div>
   );

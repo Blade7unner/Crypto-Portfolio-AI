@@ -32,10 +32,10 @@ function SignupForm() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <h2>Sign Up</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center">
+        <h2 className="text-2xl p-4 font-bold">Sign Up</h2>
         <input
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="text-center shadow appearance-none border border-red-500 rounded w-half py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -43,17 +43,17 @@ function SignupForm() {
           required
         />
         <input
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="text-center shadow appearance-none border border-red-500 rounded w-half py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           required
         />
-        <button type="submit" disabled={loading} className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400'>Sign Up</button>
+        {errorMessage && <p className="text-center text-red-500 font-bold">{errorMessage}</p>}
+        {successMessage && <p className="text-center text-green-500 font-bold">{successMessage}</p>}
+        <button type="submit" disabled={loading} className='bg-orange-400 text-2xl rounded-lg w-[160px] mt-4 p-2 hover:bg-green-400 text-white'>Sign Up</button>
       </form>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
     </div>
   );
 }
