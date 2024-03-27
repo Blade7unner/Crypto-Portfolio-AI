@@ -45,7 +45,7 @@ const FavoritesPage = () => {
     return (
         <div>
             <CryptoPrices />
-            <h2>Your Favorites</h2>
+            <h2 className="text-2xl">Your Favorites</h2>
             <ul>
                 {userFavorites.length > 0 ? (
                     userFavorites.map((stockName, index) => (
