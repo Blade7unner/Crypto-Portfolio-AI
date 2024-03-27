@@ -40,51 +40,59 @@ const CryptoPrices = () => {
   }, []);
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mb-8"> {/* Card container with Tailwind styling */}
-    <h2 className="text-lg font-semibold">Cryptocurrency Prices</h2>
-    <div className="flex justify-start items-center gap-4 mt-4"> {/* Align items to the left and add some gap */}
-      <div className="flex items-center">
-        <FaBitcoin className="text-yellow-500" />
-        <span className="ml-2">${bitcoinPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <FaEthereum className="text-blue-600" />
-        <span className="ml-2">${ethereumPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <SiBinance className="text-yellow-600" />
-        <span className="ml-2">${binancePrice}</span>
-      </div>
-      <div className="flex items-center">
-        <SiCardano className="text-blue-600" />
-        <span className="ml-2">${cardanoPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <TbCurrencySolana className="text-green-600" />
-        <span className="ml-2">${solanaPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <SiXrp className="text-black-600" />
-        <span className="ml-2">${xrpPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <SiPolkadot className="text-pink-600" />
-        <span className="ml-2">${polkadotPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <SiLitecoin className="text-gray-600" />
-        <span className="ml-2">${litecoinPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <SiChainlink className="text-blue-600" />
-        <span className="ml-2">${chainlinkPrice}</span>
-      </div>
-      <div className="flex items-center">
-        <SiBitcoincash className="text-green-600" />
-        <span className="ml-2">${bitcoincashPrice}</span>
-      </div>
+<div className="bg-white shadow-md rounded-lg p-4 md:p-6 mb-8"> {/* Add padding for smaller screens */}
+  <h2 className="text-lg font-semibold">Cryptocurrency Prices</h2>
+  <div className="flex flex-wrap justify-start items-center gap-4 mt-4"> {/* Wrap items and add gap */}
+    <div className="flex items-center w-full sm:w-auto"> {/* Make items full width on small screens */}
+      <FaBitcoin className="text-yellow-500" />
+      <span className="ml-2">${bitcoinPrice}</span>
+    </div>
+    <div className="flex items-center w-full sm:w-auto">
+      <FaEthereum className="text-blue-600" />
+      <span className="ml-2">${ethereumPrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <SiBinance className="text-yellow-600" />
+      <span className="ml-2">${binancePrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <SiCardano className="text-blue-600" />
+      <span className="ml-2">${cardanoPrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <TbCurrencySolana className="text-green-600" />
+      <span className="ml-2">${solanaPrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <SiXrp className="text-black-600" />
+      <span className="ml-2">${xrpPrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <SiPolkadot className="text-pink-600" />
+      <span className="ml-2">${polkadotPrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <SiLitecoin className="text-gray-600" />
+      <span className="ml-2">${litecoinPrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <SiChainlink className="text-blue-600" />
+      <span className="ml-2">${chainlinkPrice}</span>
+    </div>
+    {/* Repeat the same pattern for other cryptocurrencies */}
+    <div className="flex items-center w-full sm:w-auto">
+      <SiBitcoincash className="text-green-600" />
+      <span className="ml-2">${bitcoincashPrice}</span>
     </div>
   </div>
+</div>
 );
 };
 
