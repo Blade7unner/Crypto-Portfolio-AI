@@ -4,7 +4,7 @@ import fetchCryptoData from '../components/fetchCryptoData';
 import CryptoPrices from '../components/CryptoPrices';
 
 function Home() {
-  const coins = ['BTC', 'ETH', 'MV']; // Array of cryptocurrencies
+  const coins = ['BTC','ETH','BNB','ADA','SOL','XRP','DOT','LTC','LINK','BCH','MV']
   const [cryptoData, setCryptoData] = useState({}); // State to store crypto data
   const [move, setMove] = useState({}); // State to store crypto data
   const [filter, setFilter] = useState('all'); // State to track the filter option
