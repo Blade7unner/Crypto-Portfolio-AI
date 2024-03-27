@@ -50,7 +50,7 @@ Disclaimer: We are not financial advisors.
 
 ## Walkthrough Videos
  
-- (links to walkthrough videos here)
+- https://drive.google.com/file/d/1V0tAkR_eYepktf25Mc0Tzgh8mm2f0dm_/view
 
 ## Credits
 
