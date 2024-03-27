@@ -20,8 +20,8 @@ function App() {
     <ApolloProvider client={apolloClient}>
       <AuthProvider>
         <a href='/'>
-          <div className='logo'>
-            <img src='/logo.svg' alt='Logo' />
+          <div className='logo flex justify-center items-center p-4'>
+            <img className="w-48 h-auto" src='/logo.png' alt='Logo' />
           </div>
         </a>
         <Router>

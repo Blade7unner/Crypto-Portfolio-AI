@@ -1,7 +1,5 @@
-import LineChart from '../components/LineGraph2';
 import LineGraphApexCharts from '../components/LineGraphApexCharts';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import fetchCryptoData from '../components/fetchCryptoData';
 import CryptoPrices from '../components/CryptoPrices';
 
@@ -39,8 +37,7 @@ function Home() {
   return (
     <div className="page">
       <CryptoPrices />
-      <h2>Home</h2>
-      <p>Welcome to the Home page!</p>
+      <h2 className="text-2xl">Welcome to the Home page!</h2>
       <div>
         <label>
           Filter By:

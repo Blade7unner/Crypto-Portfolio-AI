@@ -67,7 +67,7 @@ const ChartComponent = ({ rawData, stockName, move }) => {
   return (
     <div style={{ position: 'relative' }}>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-        <h2 style={{ flexGrow: 1, margin: 0 }}>{`${stockName} (Recommendation: ${move})`}</h2>
+        <h2 style={{ flexGrow: 1, margin: 0, fontWeight: 'bolder' }}>{`${stockName} (Recommendation: ${move})`}</h2>
         <FavoriteButton
           stockName={stockName}
           userFavorites={userFavorites}
