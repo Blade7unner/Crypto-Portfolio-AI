@@ -76,7 +76,7 @@ function Navigation() {
         )}
         <li className='hover:bg-green-400 p-2 rounded flex-1'>
           <Link to='/payment' className='text-white text-3xl block'>
-            Donation
+            Donate!
           </Link>
         </li>
       </ul>
