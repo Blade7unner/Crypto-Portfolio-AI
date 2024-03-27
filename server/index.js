@@ -31,14 +31,7 @@ if (process.env.NODE_ENV !== 'production') {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => {
-    // Ensure 'req' is defined and then pass it to authMiddleware
-    if (!req) {
-      console.error('Request object is undefined in context setup');
-      throw new Error('Request object is undefined');
-    }
-    return await authMiddleware(req);
-  },
+  context: async ({ req }) => await authMiddleware(req),
 });
 
 const startApolloServer = async () => {

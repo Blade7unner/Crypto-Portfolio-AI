@@ -1,51 +1,47 @@
-import React, { useEffect } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import { ADD_FAVORITE_MUTATION, REMOVE_FAVORITE_MUTATION } from '../utils/mutations';
-import { jwtDecode } from 'jwt-decode'; // Corrected import
+import { GET_USER_FAVORITES } from '../utils/queries';
+import Modal from './Modal';
+import { Link } from 'react-router-dom';
 
-const FavoriteButton = ({ stockName, userFavorites, setUserFavorites }) => {
-    const [addFavorite] = useMutation(ADD_FAVORITE_MUTATION);
-    const [removeFavorite] = useMutation(REMOVE_FAVORITE_MUTATION);
-    
-    // Determine if the current item is saved
+const FavoriteButton = ({ stockName }) => {
+    const { data, refetch } = useQuery(GET_USER_FAVORITES);
+    const [addFavorite] = useMutation(ADD_FAVORITE_MUTATION, {
+        onCompleted: () => refetch(),
+    });
+    const [removeFavorite] = useMutation(REMOVE_FAVORITE_MUTATION, {
+        onCompleted: () => refetch(),
+    });
+    const [showModal, setShowModal] = useState(false);
+    const userFavorites = data?.favorites || [];
     const isSaved = userFavorites.includes(stockName);
-
-
-    useEffect(() => {
-        // Load favorites from localStorage on mount
-        const storedFavorites = localStorage.getItem('userFavorites');
-        if (storedFavorites) {
-            setUserFavorites(JSON.parse(storedFavorites));
-        }
-    }, [setUserFavorites]);
 
     const handleFavoriteToggle = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
-            console.log("No token found");
+            setShowModal(true);
             return;
         }
-        
-        const decoded = jwtDecode(token);
-        const userEmail = decoded.email;
-        
+    
         if (isSaved) {
-            await removeFavorite({ variables: { stockName: stockName } });
-            const updatedFavorites = userFavorites.filter(fav => fav !== stockName);
-            setUserFavorites(updatedFavorites);
-            localStorage.setItem('userFavorites', JSON.stringify(updatedFavorites));
+            await removeFavorite({ variables: { stockName } });
         } else {
-            await addFavorite({ variables: { stockName: stockName, email: userEmail } });
-            const updatedFavorites = [...userFavorites, stockName];
-            setUserFavorites(updatedFavorites);
-            localStorage.setItem('userFavorites', JSON.stringify(updatedFavorites));
+            await addFavorite({ variables: { stockName } });
         }
     };
 
     return (
-        <button className='bg-orange-400 text-2xl rounded-lg w-[220px] items-center flex justify-center mt-4 hover:bg-green-400' onClick={handleFavoriteToggle}>
+        <>
+        <button className='bg-orange-400 text-2xl rounded-lg w-[270px] p-2 text-white items-center flex justify-center mt-4 hover:bg-green-400' onClick={handleFavoriteToggle}>
             {isSaved ? 'Remove from Favorites' : 'Add to Favorites'}
         </button>
+                    <Modal
+                    isOpen={showModal}
+                    onClose={() => setShowModal(false)}>
+                    <p>Please <Link to="/login" className="mt-5 text-blue-500 underline" onClick={() => setShowModal(false)}>log in</Link> or <Link to="/signup" className="mt-5 text-blue-500 underline" onClick={() => setShowModal(false)}>sign up</Link> before using this feature.</p>
+                </Modal>
+    </>
     );
 };
 
