@@ -49,8 +49,12 @@ Disclaimer: We are not financial advisors.
 - POST /api/predict-price: Make predictions about future cryptocurrency prices using AI from the ChatGPT API.
 
 ## Walkthrough Videos
- 
-- https://drive.google.com/file/d/1V0tAkR_eYepktf25Mc0Tzgh8mm2f0dm_/view
+
+- You can access the Crypto Portfolio AI video walkthrough [here](https://drive.google.com/file/d/1V0tAkR_eYepktf25Mc0Tzgh8mm2f0dm_/view).
+
+## Deployed Application
+
+- You can access the Crypto Portfolio AI application [here](https://crypto-portfolio-ai.onrender.com/).
 
 ## Credits
 
